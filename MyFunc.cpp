@@ -248,6 +248,7 @@ Vector ExternalForce(struct world * jello, int i, int j, int k)
 		+ (1 - s)*t*g*jello->forceField[xf * jello->resolution * jello->resolution + yc * jello->resolution + zc].x
 		+ (1 - s)*(1 - t)*g*jello->forceField[xf * jello->resolution * jello->resolution + yf * jello->resolution + zc].x
 		+ s * t*g*jello->forceField[xc * jello->resolution * jello->resolution + yc * jello->resolution + zc].x;
+
 	ExternalF.y = (1 - s)*(1 - t)*(1 - g)*jello->forceField[xf * jello->resolution * jello->resolution + yf * jello->resolution + zf].y
 		+ s * (1 - t)*(1 - g)*jello->forceField[xc * jello->resolution * jello->resolution + yf * jello->resolution + zf].y
 		+ (1 - s)*t*(1 - g)*jello->forceField[xf * jello->resolution * jello->resolution + yc * jello->resolution + zf].y

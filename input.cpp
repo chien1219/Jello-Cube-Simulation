@@ -17,7 +17,9 @@ void saveScreenshot(int windowWidth, int windowHeight, char *filename)
   // Allocate a picture buffer
   Pic * in = pic_alloc(windowWidth, windowHeight, 3, NULL);
 
-  printf("File to save to: %s\n", filename);
+  char foldername[50] = "Animation/";
+  strcat(foldername, filename);
+  printf("File to save to: %s\n", foldername);
 
   for (int i=windowHeight-1; i>=0; i--)
   {
@@ -25,7 +27,7 @@ void saveScreenshot(int windowWidth, int windowHeight, char *filename)
       &in->pix[i*in->nx*in->bpp]);
   }
 
-  if (ppm_write(filename, in))
+  if (ppm_write(foldername, in))
     printf("File saved Successfully\n");
   else
     printf("Error in Saving\n");
@@ -125,8 +127,7 @@ void keyboardFunc (unsigned char key, int x, int y)
       break;
 
     case 'p':
-      //pause = 1 - pause;
-      pause = 1 + pause;
+      pause = 1 - pause;
       break;
 
     case 'f': // control external force

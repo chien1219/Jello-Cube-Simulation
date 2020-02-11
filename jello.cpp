@@ -50,7 +50,7 @@ int sprite=0;
 double JelloFixedR;
 int VerticesState[8][8][8];
 
-int shear = 0, bend = 0, structural = 1, pause = 0, viewingMode = 0, saveScreenToFile = 0, showTexture = 0, EXforce = 1;
+int shear = 0, bend = 0, structural = 1, pause = 0, viewingMode = 1, saveScreenToFile = 0, showTexture = 0, EXforce = 1;
 
 struct world jello;
 
@@ -266,7 +266,7 @@ void doIdle()
   if (saveScreenToFile==1)
   {
     saveScreenshot(windowWidth, windowHeight, s);
-  //  saveScreenToFile=0; // save only once, change this if you want continuos image generation (i.e. animation)
+    //saveScreenToFile=0; // save only once, change this if you want continuos image generation (i.e. animation)
     sprite++;
   }
 

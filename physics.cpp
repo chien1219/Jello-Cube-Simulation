@@ -75,7 +75,7 @@ void computeAcceleration(struct world * jello, struct point a[8][8][8])
 				if (jello->incPlanePresent)
 				{
 					Vector INF;
-					INF=InclinedForce( jello, i, j, k);
+					INF = InclinedForce( jello, i, j, k);
 					pSUM( FFinal[i][j][k], INF, FFinal[i][j][k]);
 				}
 				// Compute External Force
