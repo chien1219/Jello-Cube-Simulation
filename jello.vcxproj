@@ -132,18 +132,22 @@
   <ItemGroup>
     <ClInclude Include="input.h" />
     <ClInclude Include="jello.h" />
+    <ClInclude Include="MyFunc.h" />
     <ClInclude Include="openGL-headers.h" />
     <ClInclude Include="physics.h" />
     <ClInclude Include="pic.h" />
     <ClInclude Include="showCube.h" />
+    <ClInclude Include="Texture\Cbmp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="input.cpp" />
     <ClCompile Include="jello.cpp" />
+    <ClCompile Include="MyFunc.cpp" />
     <ClCompile Include="physics.cpp" />
     <ClCompile Include="pic.cpp" />
     <ClCompile Include="ppm.cpp" />
     <ClCompile Include="showCube.cpp" />
+    <ClCompile Include="Texture\CBmp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

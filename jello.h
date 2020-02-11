@@ -8,15 +8,21 @@
 #ifndef _JELLO_H_
 #define _JELLO_H_
 
-#include "openGL-headers.h"
-#include "pic.h"
+#ifdef WIN32
+  #include <windows.h>
+#endif
 
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include "openGL-headers.h"
+#include "pic.h"
 
-#define pi 3.141592653589793238462643383279 
+#define pi 3.141592653589793238462643383279
+
+#define g_ciTexNum 6
+extern GLuint g_uiTextureId[g_ciTexNum];
 
 // camera angles
 extern double Theta;
@@ -29,16 +35,40 @@ extern int sprite;
 // mouse control
 extern int g_vMousePos[2];
 extern int g_iLeftMouseButton,g_iMiddleMouseButton,g_iRightMouseButton;
+extern int DownPos[2],UpPos[2];
+extern bool isMouseForce;
 
-struct point 
+struct point
+{
+   double x;
+   double y;
+   double z;
+};
+struct Vector
 {
    double x;
    double y;
    double z;
 };
 
+extern double JelloFixedR; // jello's length
+extern int EXforce;
+void InitAllPointsSide(struct world * jello);
+
+extern int VerticesState[8][8][8];
+
+void makeCheckImage(void);
+extern GLuint texName;
+/* Texture Related
+GLuint LoadTexture( const char * filename );
+extern GLuint textures;
+extern GLuint texName;
+extern unsigned char * data;
+void makeCheckImage(void);
+*/
+
 // these variables control what is displayed on the screen
-extern int shear, bend, structural, pause, viewingMode, saveScreenToFile;
+extern int shear, bend, structural, pause, viewingMode, saveScreenToFile,showTexture;
 
 struct world
 {
@@ -59,6 +89,19 @@ struct world
 };
 
 extern struct world jello;
+
+#define NEIGHBOR_FORCE(di,dj,dk,R) \
+    ip=i+(di);\
+    jp=j+(dj);\
+    kp=k+(dk);\
+    if\
+    (!( (ip>7) || (ip<0) ||\
+      (jp>7) || (jp<0) ||\
+    (kp>7) || (kp<0) ) ) \
+    {\
+     oneDirectF = ForceInSpring(jello,R,jello->p[i][j][k],jello->p[ip][jp][kp],jello->v[i][j][k],jello->v[ip][jp][kp]);\
+     pSUM(FFinal[i][j][k], oneDirectF, FFinal[i][j][k]);\
+    }\
 
 // computes crossproduct of three vectors, which are given as points
 // struct point vector1, vector2, dest
@@ -96,7 +139,7 @@ extern struct world jello;
   (dest).x = (source).x;\
   (dest).y = (source).y;\
   (dest).z = (source).z;
-  
+
 // assigns values x,y,z to point vector dest
 // struct point dest
 // double x,y,z

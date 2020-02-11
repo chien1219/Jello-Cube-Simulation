@@ -33,6 +33,12 @@
     <ClInclude Include="showCube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MyFunc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture\Cbmp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="input.cpp">
@@ -51,6 +57,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="showCube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MyFunc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture\CBmp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
