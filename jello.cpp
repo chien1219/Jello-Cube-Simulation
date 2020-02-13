@@ -14,22 +14,12 @@
 #include "MyFunc.h"
 #include "Texture\Cbmp.h"
 
-//personal added
 bool firsttime=true;
 
 double sw, sh;
 double tw, th;
 
-GLuint textures;
-unsigned char * data;
-/*  Create checkerboard texture  */
-#define checkImageWidth 64
-#define checkImageHeight 64
-static GLubyte checkImage[checkImageHeight][checkImageWidth][4];
-
-GLuint texName; //checkboard;
 GLuint g_uiTextureId[g_ciTexNum] = {0};
-//
 
 // camera parameters
 double Theta = pi / 6;
@@ -106,7 +96,7 @@ void myinit()
 		pDIFFERENCE(jello.p[0][0][0], jello.p[0][0][1], L);
 		JelloFixedR = ComputeLength(L);
 
-		firsttime=false;
+		firsttime = false;
 
 		TextureInit();
     }
@@ -279,9 +269,9 @@ void doIdle()
   {
       // insert code which appropriately performs one step of the cube simulation:
       if (strcmp(jello.integrator, "Euler") == 0)
-        Euler(&jello);
-      else 
-        RK4(&jello);
+		  Euler(&jello);
+      else
+		  RK4(&jello);
   }
 
   glutPostRedisplay();

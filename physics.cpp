@@ -15,87 +15,90 @@
 void computeAcceleration(struct world * jello, struct point a[8][8][8])
 {
 	/* for you to implement ... */
-
-    Vector FFinal[8][8][8]={0};
+    Vector finalForce[8][8][8]={0};
 
     int i,j,k,ip,jp,kp;
     Vector oneDirectF;
-	double SR = JelloFixedR;
-	double HR = sqrt(2) * JelloFixedR;
-	double HHR = sqrt(3) * JelloFixedR;
-	double BR = 2 * JelloFixedR;
+	double structuralRL = JelloFixedR;
+	double shearRL = sqrt(2) * JelloFixedR;
+	double shearFRL = sqrt(3) * JelloFixedR;
+	double bendRL = 2 * JelloFixedR;
 
 	for (i=0; i<=7; i++)
 		for (j=0; j<=7; j++)
 			for (k=0; k<=7; k++)
 			{
 				// Structural
-				NEIGHBOR_FORCE(1,0,0,SR);
-				NEIGHBOR_FORCE(0,1,0,SR);
-				NEIGHBOR_FORCE(0,0,1,SR);
-				NEIGHBOR_FORCE(-1,0,0,SR);
-				NEIGHBOR_FORCE(0,-1,0,SR);
-				NEIGHBOR_FORCE(0,0,-1,SR);
-				// Shear
-				NEIGHBOR_FORCE(1,1,0,HR);
-				NEIGHBOR_FORCE(-1,1,0,HR);
-				NEIGHBOR_FORCE(-1,-1,0,HR);
-				NEIGHBOR_FORCE(1,-1,0,HR);
-				NEIGHBOR_FORCE(0,1,1,HR);
-				NEIGHBOR_FORCE(0,-1,1,HR);
-				NEIGHBOR_FORCE(0,-1,-1,HR);
-				NEIGHBOR_FORCE(0,1,-1,HR);
-				NEIGHBOR_FORCE(1,0,1,HR);
-				NEIGHBOR_FORCE(-1,0,1,HR);
-				NEIGHBOR_FORCE(-1,0,-1,HR);
-				NEIGHBOR_FORCE(1,0,-1,HR);
+				NEIGHBOR_FORCE(1,0,0,structuralRL);
+				NEIGHBOR_FORCE(0,1,0,structuralRL);
+				NEIGHBOR_FORCE(0,0,1,structuralRL);
+				NEIGHBOR_FORCE(-1,0,0,structuralRL);
+				NEIGHBOR_FORCE(0,-1,0,structuralRL);
+				NEIGHBOR_FORCE(0,0,-1,structuralRL);
 
-				NEIGHBOR_FORCE(1,1,1,HHR);
-				NEIGHBOR_FORCE(-1,1,1,HHR);
-				NEIGHBOR_FORCE(-1,-1,1,HHR);
-				NEIGHBOR_FORCE(1,-1,1,HHR);
-				NEIGHBOR_FORCE(1,1,-1,HHR);
-				NEIGHBOR_FORCE(-1,1,-1,HHR);
-				NEIGHBOR_FORCE(-1,-1,-1,HHR);
-				NEIGHBOR_FORCE(1,-1,-1,HHR);
+				// Shear
+				NEIGHBOR_FORCE(1,1,0,shearRL);
+				NEIGHBOR_FORCE(-1,1,0,shearRL);
+				NEIGHBOR_FORCE(-1,-1,0,shearRL);
+				NEIGHBOR_FORCE(1,-1,0,shearRL);
+				NEIGHBOR_FORCE(0,1,1,shearRL);
+				NEIGHBOR_FORCE(0,-1,1,shearRL);
+				NEIGHBOR_FORCE(0,-1,-1,shearRL);
+				NEIGHBOR_FORCE(0,1,-1,shearRL);
+				NEIGHBOR_FORCE(1,0,1,shearRL);
+				NEIGHBOR_FORCE(-1,0,1,shearRL);
+				NEIGHBOR_FORCE(-1,0,-1,shearRL);
+				NEIGHBOR_FORCE(1,0,-1,shearRL);
+
+				NEIGHBOR_FORCE(1,1,1,shearFRL);
+				NEIGHBOR_FORCE(-1,1,1,shearFRL);
+				NEIGHBOR_FORCE(-1,-1,1,shearFRL);
+				NEIGHBOR_FORCE(1,-1,1,shearFRL);
+				NEIGHBOR_FORCE(1,1,-1,shearFRL);
+				NEIGHBOR_FORCE(-1,1,-1,shearFRL);
+				NEIGHBOR_FORCE(-1,-1,-1,shearFRL);
+				NEIGHBOR_FORCE(1,-1,-1,shearFRL);
+
 				// Bend
-				NEIGHBOR_FORCE(2,0,0,BR);
-				NEIGHBOR_FORCE(0,2,0,BR);
-				NEIGHBOR_FORCE(0,0,2,BR);
-				NEIGHBOR_FORCE(-2,0,0,BR);
-				NEIGHBOR_FORCE(0,-2,0,BR);
-				NEIGHBOR_FORCE(0,0,-2,BR);
+				NEIGHBOR_FORCE(2,0,0,bendRL);
+				NEIGHBOR_FORCE(0,2,0,bendRL);
+				NEIGHBOR_FORCE(0,0,2,bendRL);
+				NEIGHBOR_FORCE(-2,0,0,bendRL);
+				NEIGHBOR_FORCE(0,-2,0,bendRL);
+				NEIGHBOR_FORCE(0,0,-2,bendRL);
 
 				// Compute Collision and Response
-				Vector PF;
-				PF = PenaltyForce(jello, i, j, k);
-				pSUM(FFinal[i][j][k], PF, FFinal[i][j][k]);
+				Vector penaltyForce;
+				penaltyForce = PenaltyForce(jello, i, j, k);
+				pSUM(finalForce[i][j][k], penaltyForce, finalForce[i][j][k]);
+
+				// Compute External Force
+				if (IsExternalForce(jello))
+				{
+					Vector externalForce;
+					externalForce = ExternalForce(jello, i, j, k);
+					pSUM(finalForce[i][j][k], externalForce, finalForce[i][j][k]);
+				}
 
 				// Compute Inclined Collision and Response
 				if (jello->incPlanePresent)
 				{
-					Vector INF;
-					INF = InclinedForce( jello, i, j, k);
-					pSUM( FFinal[i][j][k], INF, FFinal[i][j][k]);
+					Vector inclineForce;
+					inclineForce = InclinedForce( jello, i, j, k);
+					pSUM( finalForce[i][j][k], inclineForce, finalForce[i][j][k]);
 				}
-				// Compute External Force
-				if (IsOtherForce(jello))
-				{
-					Vector EF;
-					EF = ExternalForce(jello,i,j,k);
-					pSUM(FFinal[i][j][k], EF, FFinal[i][j][k]);
-				}
+
 				// Compute MouseForce
 				if (isMouseForce)
 				{
-					Vector MF;
-					MF = MouseForce(jello);
-					pSUM(FFinal[i][j][k], MF, FFinal[i][j][k]);
+					Vector mouseForce;
+					mouseForce = MouseForce(jello);
+					pSUM(finalForce[i][j][k], mouseForce, finalForce[i][j][k]);
 				}
 
-				a[i][j][k].x=FFinal[i][j][k].x/jello->mass;
-				a[i][j][k].y=FFinal[i][j][k].y/jello->mass;
-				a[i][j][k].z=FFinal[i][j][k].z/jello->mass;
+				a[i][j][k].x=finalForce[i][j][k].x/jello->mass;
+				a[i][j][k].y=finalForce[i][j][k].y/jello->mass;
+				a[i][j][k].z=finalForce[i][j][k].z/jello->mass;
 			}
 	if (isMouseForce)
 		isMouseForce = false;

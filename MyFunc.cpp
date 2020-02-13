@@ -203,7 +203,7 @@ Vector PenaltyForce(struct world * jello, int i, int j, int k)
 	}
 }
 
-bool IsOtherForce(struct world * jello)
+bool IsExternalForce(struct world * jello)
 {
 	if (jello->resolution > 0 && EXforce)
 		return true;
@@ -278,9 +278,12 @@ Vector MouseForce(struct world * jello)
 	Vector MouseF;
 
 	point pos1, pos2;
-	pos1.x = 0; pos2.x = 0;
-	pos1.y = UpPos[0]; pos2.y = DownPos[0];
-	pos1.z = -UpPos[1]; pos2.z = -DownPos[1];
+	pos1.x = 0; 
+	pos2.x = 0;
+	pos1.y = UpPos[0]; 
+	pos2.y = DownPos[0];
+	pos1.z = -UpPos[1]; 
+	pos2.z = -DownPos[1];
 
 	pDIFFERENCE(pos1, pos2, L);
 

@@ -57,16 +57,6 @@ void InitAllPointsSide(struct world * jello);
 
 extern int VerticesState[8][8][8];
 
-void makeCheckImage(void);
-extern GLuint texName;
-/* Texture Related
-GLuint LoadTexture( const char * filename );
-extern GLuint textures;
-extern GLuint texName;
-extern unsigned char * data;
-void makeCheckImage(void);
-*/
-
 // these variables control what is displayed on the screen
 extern int shear, bend, structural, pause, viewingMode, saveScreenToFile,showTexture;
 
@@ -100,7 +90,7 @@ extern struct world jello;
     (kp>7) || (kp<0) ) ) \
     {\
      oneDirectF = ForceInSpring(jello,R,jello->p[i][j][k],jello->p[ip][jp][kp],jello->v[i][j][k],jello->v[ip][jp][kp]);\
-     pSUM(FFinal[i][j][k], oneDirectF, FFinal[i][j][k]);\
+     pSUM(finalForce[i][j][k], oneDirectF, finalForce[i][j][k]);\
     }\
 
 // computes crossproduct of three vectors, which are given as points
